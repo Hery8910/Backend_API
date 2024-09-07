@@ -20,7 +20,7 @@ This project is a RESTful API built for a Cleaning Service application. The API 
 
 - touch .env
 
-MONGODB_URI=mongodb+srv://<userName>:NEXTAUTH_SECRET@cluster0.ycrcj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=Your URI
 NEXTAUTH_SECRET=Your secret
 JWT_SECRET=Your JWT Key
 EMAIL_SERVER_HOST=smtp.gmail.com
