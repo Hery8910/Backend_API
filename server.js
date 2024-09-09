@@ -28,7 +28,6 @@ const loginLimiter = rateLimit({
 
 
 // Helmet secures the app by setting various HTTP headers for security
-const helmet = require('helmet');
 
 app.use(
   helmet({
@@ -40,7 +39,6 @@ app.use(
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
         connectSrc: ["'self'"],
-        // Agrega cualquier otro origen que sea necesario
       },
     },
   })
