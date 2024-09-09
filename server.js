@@ -28,7 +28,24 @@ const loginLimiter = rateLimit({
 
 
 // Helmet secures the app by setting various HTTP headers for security
-app.use(helmet());
+const helmet = require('helmet');
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        fontSrc: ["'self'", "https://backend-api-1-1ns6.onrender.com"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'"],
+        // Agrega cualquier otro origen que sea necesario
+      },
+    },
+  })
+);
+
 
 // Compression reduces the size of HTTP responses to optimize traffic
 app.use(compression());
