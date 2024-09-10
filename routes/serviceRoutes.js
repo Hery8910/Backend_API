@@ -57,6 +57,6 @@ router.post('/', validateServiceRequest, protect, createServiceRequest);
  *       403:
  *         description: Unauthorized access (Admin only)
  */
-router.get('/', protect, admin, protect, getServiceRequests);
+router.get('/', protect, admin, getServiceRequests);
 
 module.exports = router;

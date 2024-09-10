@@ -22,16 +22,17 @@ const validateRegister = [
 
 const registerUser = async (req, res, next) => {
   try {
+    
+    const { name, email, password } = req.body;
     // Verify if there is error on the validation
     const errors = validationResult(req);
-
+    
     if (!errors.isEmpty()) {
       const error = new Error(errors.array()[0].msg);
       error.statusCode = 400;
       throw error;
     }
-
-    const { name, email, password } = req.body;
+    
     // Look if user exist
     const userExists = await User.findOne({ email });
 
@@ -49,7 +50,6 @@ const registerUser = async (req, res, next) => {
       name,
       email,
       password: hashedPassword, 
-      isVerified: false, 
     });
 
     // Save the user to the database
