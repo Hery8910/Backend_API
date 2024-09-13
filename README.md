@@ -21,14 +21,23 @@ This project is a RESTful API built for a Cleaning Service application. The API 
 - touch .env
 
 MONGODB_URI=Your URI
+
 NEXTAUTH_SECRET=Your secret
+
 JWT_SECRET=Your JWT Key
+
 EMAIL_SERVER_HOST=smtp.gmail.com
+
 EMAIL_SERVER_PORT=587
+
 EMAIL_SERVER_USER=your-email@example.com
+
 EMAIL_SERVER_PASSWORD=your-email-password
+
 EMAIL_FROM="Your-company-name no-reply@example.com"
+
 FRONTEND_URL="http://localhost:3000"
+
 ALLOWED_ORIGINS=http://localhost:3000,http://myapp.com
 
 5. Start the server:
