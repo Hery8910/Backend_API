@@ -38,7 +38,7 @@ app.use(
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "http://localhost:5173"],
+        connectSrc: ["'self'", "http://localhost:5173", "https://backend-api-1-1ns6.onrender.com"],
       },
     },
   })
