@@ -34,15 +34,16 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        fontSrc: ["'self'", "https://backend-api-1-1ns6.onrender.com"],
+        fontSrc: ["'self'", "https://backend-api-1-1ns6.onrender.com"], 
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "http://localhost:5173", "https://backend-api-1-1ns6.onrender.com"],
+        connectSrc: ["'self'", "http://localhost:5173", "https://backend-api-1-1ns6.onrender.com"], 
       },
     },
   })
 );
+
 
 
 // Compression reduces the size of HTTP responses to optimize traffic
