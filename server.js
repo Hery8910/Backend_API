@@ -55,19 +55,24 @@ app.use(mongoSanitize());
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
   : [];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); // Allow access if origin is allowed or missing (like in tests)
-    } else {
-      callback(new Error("Not allowed by CORS")); // Block access
-    }
-  },
-  credentials: true,
-};
+  const corsOptions = {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  };
 
 // Enable CORS with the defined options
-app.use('*', cors(corsOptions));
+app.use(cors(corsOptions));
+
+// Handel preflight requests
+app.options('*', cors(corsOptions));
 
 // Error handling for CORS
 app.use((err, req, res, next) => {
