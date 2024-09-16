@@ -38,7 +38,7 @@ app.use(
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'"],
+        connectSrc: ["'self'", "http://localhost:5173"],
       },
     },
   })
@@ -67,7 +67,7 @@ const corsOptions = {
 };
 
 // Enable CORS with the defined options
-app.use(cors(corsOptions));
+app.use('*', cors(corsOptions));
 
 // Error handling for CORS
 app.use((err, req, res, next) => {
