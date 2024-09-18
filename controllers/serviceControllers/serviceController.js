@@ -1,6 +1,9 @@
 const { check, validationResult } = require("express-validator");
 const { create, find } = require('../../models/ServiceRequest');
 const ServiceRequest = require('../../models/ServiceRequest');
+const WorkSchedule = require('../../models/WorkSchedule');
+const { calculateAvailability } = require("../scheduleController/calculateAvaillability");
+
 
 const validateServiceRequest = [
   // Validate that 'serviceType' is not empty
@@ -18,8 +21,10 @@ const validateServiceRequest = [
 
 // Create a new service request
 const createServiceRequest = async (req, res, next) => {
+
+
   try {
-    const { serviceType, date, time, address, notes } = req.body;
+    const { serviceType, requiredHours, date, time, notes } = req.body;
 
 
     if (!req.user) {
@@ -30,9 +35,11 @@ const createServiceRequest = async (req, res, next) => {
     const serviceRequest = await ServiceRequest.create({
       user: req.user._id,
       serviceType,
+      requiredHours,
       date,
       time,
-      address,
+      status: 'pending', 
+      address: req.user.address,
       notes,
     });
 
@@ -65,4 +72,22 @@ const getServiceRequests = async (req, res, next) => {
   }
 };
 
-module.exports = { validateServiceRequest, createServiceRequest, getServiceRequests };
+const confirmServiceRequests = async (req, res) => {
+  try {
+    const serviceRequest = await ServiceRequest.findById(req.params.serviceId);
+    if (!serviceRequest) {
+      return res.status(404).json({ message: 'Service request not found' });
+    }
+
+    serviceRequest.status = 'confirmed';
+    await serviceRequest.save();
+
+    res.status(200).json({ message: 'Service confirmed', serviceRequest });
+  } catch (error) {
+    res.status(500).json({ message: 'Error confirming service', error });
+  }
+}
+
+
+
+module.exports = { validateServiceRequest, createServiceRequest, getServiceRequests, confirmServiceRequests };

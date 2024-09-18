@@ -1,7 +1,8 @@
 // /routes/serviceRoutes.js
 const { Router } = require('express');
-const { getServiceRequests, createServiceRequest, validateServiceRequest } = require('../controllers/serviceControllers/serviceController');
+const { getServiceRequests, createServiceRequest, validateServiceRequest, setWorkSchedule, confirmServiceRequests } = require('../controllers/serviceControllers/serviceController');
 const { protect, admin } = require('../middleware/authMiddleware');
+const { calculateAvailability } = require('../controllers/scheduleController/calculateAvaillability');
 const router = Router();
 
 /**
@@ -58,5 +59,11 @@ router.post('/', validateServiceRequest, protect, createServiceRequest);
  *         description: Unauthorized access (Admin only)
  */
 router.get('/', protect, admin, getServiceRequests);
+
+router.post('/set-work-schedule', protect, admin, setWorkSchedule)
+
+router.post('/check-availability', protect, checkAvailability)
+
+router.post('/confirm-service/:serviceId', protect, admin, confirmServiceRequests)
 
 module.exports = router;

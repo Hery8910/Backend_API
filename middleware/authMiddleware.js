@@ -43,4 +43,4 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin }; // Export the middleware functions
+module.exports = { protect, admin }; 
