@@ -1,29 +1,35 @@
-const setWorkSchedule = async (req, res, next) => {
-    const { clientId, startTime, duration } = req.body; 
-  
-    try {
-      const workSchedule = await WorkSchedule.findOne({ clientId });
-      
-      if (!workSchedule) {
-        return res.status(404).json({ message: 'Work schedule not found' });
-      }
-  
-      const availability = calculateAvailability(workSchedule, startTime, duration);
-  
-      const isAvailable = availability.some(block => {
-        const blockDuration = (block.end - block.start) / (1000 * 60 * 60);  
-        return blockDuration >= duration;  
-      });
-  
-      if (isAvailable) {
-        res.status(200).json({ available: true });
-      } else {
-        res.status(400).json({ available: false, message: 'Insufficient time available' });
-      }
-    } catch (error) {
-      console.error('Error checking availability:', error);
-      res.status(500).json({ message: 'Error checking availability' });
-    }
-  }
+const WorkSchedule = require('../../models/WorkSchedule'); 
 
-module.exports = {  setWorkSchedule };
+const setWorkSchedule = async (req, res, next) => {
+  const { clientId, days, startTime, endTime } = req.body;  
+
+  try {
+    let workSchedule = await WorkSchedule.findOne({ clientId });
+
+    if (!workSchedule) {
+      workSchedule = new WorkSchedule({
+        clientId,
+        days,
+        startTime,
+        endTime,
+      });
+
+      await workSchedule.save();
+      return res.status(201).json({ message: 'Work schedule created successfully', workSchedule });
+    }
+
+    // Si existe, actualizar el horario de trabajo
+    workSchedule.days = days;
+    workSchedule.startTime = startTime;
+    workSchedule.endTime = endTime;
+
+    await workSchedule.save();  // Guardar los cambios en la base de datos
+
+    res.status(200).json({ message: 'Work schedule updated successfully', workSchedule });
+  } catch (error) {
+    console.error('Error setting work schedule:', error);
+    res.status(500).json({ message: 'Error setting work schedule', error });
+  }
+};
+
+module.exports = { setWorkSchedule };
