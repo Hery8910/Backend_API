@@ -2,7 +2,7 @@
 const { Router } = require('express');
 const { getServiceRequests, createServiceRequest, validateServiceRequest, setWorkSchedule, confirmServiceRequests } = require('../controllers/serviceControllers/serviceController');
 const { protect, admin } = require('../middleware/authMiddleware');
-const { calculateAvailability } = require('../controllers/scheduleController/calculateAvaillability');
+const { checkAvailability } = require('../controllers/scheduleController/checkAvailability');
 const router = Router();
 
 /**

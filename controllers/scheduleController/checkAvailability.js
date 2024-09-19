@@ -1,4 +1,4 @@
-
+const WorkSchedule = require('../../models/WorkSchedule');
 
 const checkAvailability = async (req, res) => {
     const { hours } = req.body; 
