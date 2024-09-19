@@ -1,8 +1,9 @@
 // /routes/serviceRoutes.js
 const { Router } = require('express');
-const { getServiceRequests, createServiceRequest, validateServiceRequest, setWorkSchedule, confirmServiceRequests } = require('../controllers/serviceControllers/serviceController');
+const { getServiceRequests, createServiceRequest, validateServiceRequest, confirmServiceRequests } = require('../controllers/serviceControllers/serviceController');
 const { protect, admin } = require('../middleware/authMiddleware');
-const { checkAvailability} = require('../controllers/scheduleController/checkAvailability')
+const { checkAvailability} = require('../controllers/scheduleController/checkAvailability');
+const { setWorkSchedule } = require('../controllers/scheduleController/setWorkSchedule');
 const router = Router();
 
 /**

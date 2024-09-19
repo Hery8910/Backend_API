@@ -2,7 +2,6 @@ const { check, validationResult } = require("express-validator");
 const { create, find } = require('../../models/ServiceRequest');
 const ServiceRequest = require('../../models/ServiceRequest');
 const WorkSchedule = require('../../models/WorkSchedule');
-const { calculateAvailability } = require("../scheduleController/calculateAvaillability");
 
 
 const validateServiceRequest = [
