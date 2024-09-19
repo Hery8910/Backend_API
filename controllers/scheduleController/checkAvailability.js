@@ -4,7 +4,7 @@ const checkAvailability = async (req, res) => {
     const { hours } = req.body; 
     const clientId = req.user._id;
     try {
-      const workSchedule = await WorkSchedule.findOne({ clientId: clientId });
+      const workSchedule = await WorkSchedule.findOne({ clientId });
       const availableSlots = calculateAvailableSlots(workSchedule, hours);
   
       res.status(200).json({ slots: availableSlots });
