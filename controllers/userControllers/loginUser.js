@@ -20,14 +20,8 @@ const loginUser = async (req, res, next) => {
     // Check if the user exists
     const user = await User.findOne({ email });
 
-    if (!user) {
-      const error = new Error("Invalid email or password");
-      error.statusCode = 401;
-      throw error;
-    }
-
     // Compare passwords
-    if (!(await user.matchPassword(password))) {
+    if (!user || !(await user.matchPassword(password))) {
       const error = new Error("Invalid email or password"); // Incorrect password
       error.statusCode = 401;
       throw error;
@@ -40,17 +34,24 @@ const loginUser = async (req, res, next) => {
       throw error;
     }
 
-    // Send user details and JWT token
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id),
+    const token = generateToken(user);
+
+    res.cookie("authToken", token, {
+      httpOnly: true, // Prevent JavaScript access
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "strict", // Protect against CSRF
+      maxAge: 3600000, // 1 hour
     });
-  } catch (err) {
-    next(err); // Pass the error to the error handling middleware
-  }
-};
+      // Send user details
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
 
 module.exports = loginUser;

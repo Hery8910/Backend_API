@@ -2,9 +2,11 @@
 const { Router } = require('express');
 const { protect } = require('../middleware/authMiddleware');
 const { registerUser, validateRegister } = require('../controllers/userControllers/registerUser');
+const { loginLimiter, registerLimiter } = require("../middleware/rateLimiter");
 const loginUser = require('../controllers/userControllers/loginUser');
 const verifyEmail = require('../controllers/userControllers/verifyEmail');
 const getUserProfile = require('../controllers/userControllers/getUserProfil');
+
 
 const router = Router();
 
@@ -36,7 +38,7 @@ const router = Router();
  *       400:
  *         description: User already exists or validation error
  */
-router.post('/register', validateRegister, registerUser);
+router.post('/register', registerLimiter, validateRegister, registerUser);
 
 /**
  * @swagger
@@ -63,7 +65,7 @@ router.post('/register', validateRegister, registerUser);
  *       401:
  *         description: Invalid credentials or unverified account
  */
-router.post('/login', loginUser);
+router.post('/login',loginLimiter, loginUser);
 router.get('/verify-email/:token', verifyEmail); 
 /**
  * @swagger

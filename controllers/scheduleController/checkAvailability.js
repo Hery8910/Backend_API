@@ -2,9 +2,13 @@ const WorkSchedule = require('../../models/WorkSchedule');
 
 const checkAvailability = async (req, res) => {
     const { hours } = req.body; 
-    const clientId = req.user._id;
     try {
-      const workSchedule = await WorkSchedule.findOne({ clientId });
+      const workSchedule = await WorkSchedule.findOne({ clientId: 'client-id' });
+
+      if (!workSchedule) {
+        return res.status(404).json({ message: 'Work schedule not found' });
+      }
+
       const availableSlots = calculateAvailableSlots(workSchedule, hours);
   
       res.status(200).json({ slots: availableSlots });

@@ -13,10 +13,10 @@ const sendEmail = async (options) => {
     });
 
     const mailOptions = {
-      from: `"Cleaning Service" <${process.env.EMAIL_FROM}>`,
+      from: `"Havenova" <${process.env.EMAIL_FROM}>`,
       to: options.email,
       subject: options.subject,
-      text: options.message,
+      html,
     };
 
     await transporter.sendMail(mailOptions);

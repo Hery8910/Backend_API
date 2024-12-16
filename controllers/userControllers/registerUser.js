@@ -63,13 +63,18 @@ const registerUser = async (req, res, next) => {
       "host"
     )}/api/users/verify-email/${verificationToken}`;
 
-    const message = `Hello ${name},\n\nPlease verify your account by clicking the following link:\n\n${verificationUrl}\n\nThank you,\nCleaning Service`;
-
+    const html = `
+  <h1>Welcome, ${name}!</h1>
+  <p>Please verify your account by clicking the link below:</p>
+  <a href="${verificationUrl}">Verify Account</a>
+  <p>Thank you,</p>
+  <p>Cleaning Service Team</p>
+`;
     // Send the verification email
     await sendEmail({
       email,
-      subject: "Account Verification - Cleaning Service",
-      message,
+      subject: "Account Verification - Havenova",
+      html,
     });
 
     // Respond with success message
