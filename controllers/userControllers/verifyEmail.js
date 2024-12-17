@@ -8,27 +8,20 @@ const verifyEmail = async (req, res, next) => {
     const user = await User.findOne({ email: decoded.email });
 
     if (!user) {
-      const error = new Error('User not found');
-      error.statusCode = 400;
-      throw error;
+      return res.status(400).json({ message: "User not found" });
     }
 
     if (user.isVerified) {
-      const error = new Error('User is already verified');
-      error.statusCode = 400;
-      throw error;
+      return res.redirect("/email/verified-already");
     }
 
     // Mark the user as verified
     user.isVerified = true;
     await user.save();
 
-    res.status(201).json({ message: 'Account successfully verified' });
+    res.redirect("/email/verified-success");
   } catch (error) {
-    if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-      // Handle invalid or expired token errors properly
-      return res.status(400).json({ message: 'Invalid or expired token' });
-    }
+    res.redirect("/email/verify-error");
     next(error); // For other errors, pass to global error handler
   
   }
