@@ -54,7 +54,7 @@ app.use(mongoSanitize());
 
 // CORS configuration to allow requests only from the frontend
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
+  ? process.env.ALLOWED_ORIGINS.split(",").map(origin => origin.trim())
   : [];
   const corsOptions = {
     origin: (origin, callback) => {
