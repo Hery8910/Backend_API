@@ -57,6 +57,10 @@ const registerUser = async (req, res, next) => {
     // Save the user to the database
     await newUser.save();
 
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
     // Generate a verification token
     const verificationToken = generateToken(email);
 
@@ -77,6 +81,13 @@ const registerUser = async (req, res, next) => {
       email,
       subject: "Account Verification - Havenova",
       html,
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Solo HTTPS en producción
+      sameSite: "Strict",
+      maxAge: 24 * 60 * 60 * 1000, // 1 día
     });
 
     // Respond with success message

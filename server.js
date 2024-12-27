@@ -15,6 +15,7 @@ dotenv.config(); // Load environment variables from .env file
 connectDB(); // Connect to the MongoDB database
 
 const app = express();
+app.set("trust proxy", 1);
 
 // Configure rate limiter for the login route
 const loginLimiter = rateLimit({
