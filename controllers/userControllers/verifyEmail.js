@@ -1,5 +1,7 @@
-const User = require('../../models/User');
-const jwt = require('jsonwebtoken');
+const User = require("../../models/User");
+const jwt = require("jsonwebtoken");
+const sendEmail = require("../../utils/sendEmail");
+
 
 const verifyEmail = async (req, res) => {
   try {
@@ -31,12 +33,20 @@ const resendVerificationEmail = async (req, res) => {
     }
 
     if (user.isVerified) {
-      return res.status(400).json({ message: "El correo ya ha sido verificado." });
+      return res
+        .status(400)
+        .json({ message: "El correo ya ha sido verificado." });
     }
 
-    const verificationToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    const verificationToken = jwt.sign(
+      { email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    const verificationUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/users/verify-email/${verificationToken}`;
     const html = `
     <h1>Welcome, ${user.name}!</h1>
     <p>Please verify your account by clicking the link below:</p>
@@ -44,14 +54,21 @@ const resendVerificationEmail = async (req, res) => {
     <p>Thank you,</p>
     <p>Cleaning Service Team</p>`;
 
-    await sendEmail({ to: email, subject: "Reenvío: Verificación de Correo", html });
+    await sendEmail({
+      email,
+      subject: "Resend Account Verification - Havenova",
+      html,
+    });
 
-    res.status(200).json({ message: "Correo de verificación reenviado con éxito" });
+    res
+      .status(200)
+      .json({ message: "Correo de verificación reenviado con éxito" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error al reenviar el correo de verificación" });
+    res
+      .status(500)
+      .json({ message: "Error al reenviar el correo de verificación" });
   }
 };
 
 module.exports = { verifyEmail, resendVerificationEmail };
-
