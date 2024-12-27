@@ -1,7 +1,7 @@
 const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 
-const verifyEmail = async (req, res, next) => {
+const verifyEmail = async (req, res) => {
   try {
     // Decode the token from the verification URL
     const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET);
@@ -11,20 +11,47 @@ const verifyEmail = async (req, res, next) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    if (user.isVerified) {
-      return res.redirect("/email/verified-already");
-    }
-
-    // Mark the user as verified
     user.isVerified = true;
     await user.save();
 
-    res.redirect("/email/verified-success");
+    res.status(200).json({ message: "Correo verificado con éxito" });
   } catch (error) {
-    res.redirect("/email/verify-error");
-    next(error); // For other errors, pass to global error handler
-  
+    console.error(error);
+    res.status(400).json({ message: "Token inválido o expirado" });
   }
 };
 
-module.exports = verifyEmail;
+const resendVerificationEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Usuario no encontrado" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: "El correo ya ha sido verificado." });
+    }
+
+    const verificationToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    const html = `
+    <h1>Welcome, ${user.name}!</h1>
+    <p>Please verify your account by clicking the link below:</p>
+    <a href="${verificationUrl}">Verify Account</a>
+    <p>Thank you,</p>
+    <p>Cleaning Service Team</p>`;
+
+    await sendEmail({ to: email, subject: "Reenvío: Verificación de Correo", html });
+
+    res.status(200).json({ message: "Correo de verificación reenviado con éxito" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al reenviar el correo de verificación" });
+  }
+};
+
+module.exports = { verifyEmail, resendVerificationEmail };
+

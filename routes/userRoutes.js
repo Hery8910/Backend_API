@@ -4,7 +4,7 @@ const { protect } = require('../middleware/authMiddleware');
 const { registerUser, validateRegister } = require('../controllers/userControllers/registerUser');
 const { loginLimiter, registerLimiter } = require("../middleware/rateLimiter");
 const loginUser = require('../controllers/userControllers/loginUser');
-const verifyEmail = require('../controllers/userControllers/verifyEmail');
+const {verifyEmail, resendVerificationEmail} = require('../controllers/userControllers/verifyEmail');
 const getUserProfile = require('../controllers/userControllers/getUserProfil');
 
 
@@ -66,6 +66,7 @@ router.post('/register', registerLimiter, validateRegister, registerUser);
  *         description: Invalid credentials or unverified account
  */
 router.post('/login',loginLimiter, loginUser);
+router.post('/resend-verification', resendVerificationEmail);
 router.get('/verify-email/:token', verifyEmail); 
 /**
  * @swagger

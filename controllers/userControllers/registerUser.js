@@ -16,14 +16,14 @@ const validateRegister = [
   check("name").notEmpty().withMessage("Name is required"),
   check("email").isEmail().withMessage("Please provide a valid email"),
   check("password")
-    .isLength({ min: 6 })
+    .isLength({ min: 8 })
     .withMessage("Password must be at least 6 characters long"),
 ];
 
 const registerUser = async (req, res, next) => {
   try {
     
-    const { name, email, password } = req.body;
+    const { name, email, password, address, phone } = req.body;
     // Verify if there is error on the validation
     const errors = validationResult(req);
     
@@ -50,6 +50,8 @@ const registerUser = async (req, res, next) => {
       name,
       email,
       password: hashedPassword, 
+      address,
+      phone,
     });
 
     // Save the user to the database

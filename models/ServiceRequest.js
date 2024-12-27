@@ -1,4 +1,4 @@
-// /models/ServiceRequest.js
+
 const { Schema, model } = require('mongoose');
 
 const serviceRequestSchema = Schema({
