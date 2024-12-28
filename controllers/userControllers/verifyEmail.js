@@ -10,10 +10,11 @@ const verifyEmail = async (req, res) => {
     const user = await User.findOne({ email: decoded.email });
 
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.redirect(`${process.env.FRONTEND_URL}/email/verify-email?error=UserNotFound`);
     }
+
     if (user.isVerified) {
-      return res.status(400).json({ message: "El correo ya ha sido verificado." });
+      return res.redirect(`${process.env.FRONTEND_URL}/email/verify-email?error=AlreadyVerified`);
     }
 
     user.isVerified = true;
@@ -41,7 +42,7 @@ const verifyEmail = async (req, res) => {
         email: user.email,
         role: user.role,
       });
-
+      res.redirect(`${process.env.FRONTEND_URL}/email/verify-email`);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Token inválido o expirado" });
