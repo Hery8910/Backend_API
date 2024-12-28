@@ -35,17 +35,11 @@ const verifyEmail = async (req, res) => {
         maxAge: 3600000, // 1 hour
       });
   
-      // Send user details
-      res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      });
+      
       res.redirect(`${process.env.FRONTEND_URL}/email/verify-email`);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: "Token inválido o expirado" });
+    res.redirect(`${process.env.FRONTEND_URL}/email/verify-email?error=InvalidOrExpiredToken`);
   }
 };
 
