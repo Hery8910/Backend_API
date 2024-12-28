@@ -69,7 +69,6 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   };
-  console.log("Parsed allowedOrigins:", allowedOrigins);
 
 // Enable CORS with the defined options
 app.use(cors(corsOptions));

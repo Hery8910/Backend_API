@@ -57,7 +57,7 @@ const registerUser = async (req, res, next) => {
     // Save the user to the database
     await newUser.save();
 
- 
+    
 
     // Generate a verification token
     const verificationToken = generateToken(email);
@@ -81,6 +81,15 @@ const registerUser = async (req, res, next) => {
       html,
     });
 
+    const token = generateToken(user);
+
+    // Enviar token como cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     // Respond with success message
     res
