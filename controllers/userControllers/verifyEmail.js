@@ -19,17 +19,28 @@ const verifyEmail = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
-    const authToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
-
-    // Enviar token como cookie
-    res.cookie("token", authToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+      // Generate a JWT token for authentication
+      const authToken = jwt.sign(
+        { id: user._id, role: user.role, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+  
+      // Send the authToken as a cookie
+      res.cookie("authToken", authToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 3600000, // 1 hour
+      });
+  
+      // Send user details
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
 
     res.status(200).json({ message: "Correo verificado con éxito" });
   } catch (error) {

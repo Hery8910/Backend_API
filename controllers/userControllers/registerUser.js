@@ -80,16 +80,7 @@ const registerUser = async (req, res, next) => {
       subject: "Account Verification - Havenova",
       html,
     });
-
-    const token = generateToken(user);
-
-    // Enviar token como cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    
 
     // Respond with success message
     res
