@@ -49,13 +49,13 @@ const resendVerificationEmail = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "Usuario no encontrado" });
+      return res.status(400).json({ message: "User not found." });
     }
 
     if (user.isVerified) {
       return res
         .status(400)
-        .json({ message: "El correo ya ha sido verificado." });
+        .json({ message: "This email has already been verified." });
     }
 
     const verificationToken = jwt.sign(
@@ -82,12 +82,12 @@ const resendVerificationEmail = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Correo de verificación reenviado con éxito" });
+      .json({ message: "Verification email successfully forwarded" });
   } catch (error) {
     console.error(error);
     res
       .status(500)
-      .json({ message: "Error al reenviar el correo de verificación" });
+      .json({ message: "Error resending verification email" });
   }
 };
 
