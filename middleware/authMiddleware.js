@@ -18,6 +18,18 @@ const protect = (req, res, next) => {
     res.status(401).json({ message: "Not authorized, token failed" });
   }
 };
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password"); // Excluir el campo password
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error al recuperar el perfil del usuario" });
+  }
+};
 
 // Middleware function to allow only admin users to access certain routes
 const admin = (req, res, next) => {
@@ -32,4 +44,4 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin };
+module.exports = { protect, admin, getUserProfile };
