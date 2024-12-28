@@ -42,7 +42,6 @@ const verifyEmail = async (req, res) => {
         role: user.role,
       });
 
-    res.status(200).json({ message: "Correo verificado con éxito" });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Token inválido o expirado" });
