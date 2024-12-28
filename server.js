@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const cors = require("cors");
@@ -8,13 +9,14 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 const { protect } = require("./middleware/authMiddleware");
-const { swaggerDocs, swaggerUi } = require('./config/swagger');
+const { swaggerDocs, swaggerUi } = require("./config/swagger");
 
 dotenv.config(); // Load environment variables from .env file
 
 connectDB(); // Connect to the MongoDB database
 
 const app = express();
+app.use(cookieParser());
 app.set("trust proxy", 1);
 
 // Configure rate limiter for the login route
@@ -26,8 +28,6 @@ const loginLimiter = rateLimit({
   },
 });
 
-
-
 // Helmet secures the app by setting various HTTP headers for security
 
 app.use(
@@ -35,17 +35,19 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        fontSrc: ["'self'", "https://backend-api-1-1ns6.onrender.com"], 
+        fontSrc: ["'self'", "https://backend-api-1-1ns6.onrender.com"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "http://localhost:5173", "https://backend-api-1-1ns6.onrender.com"], 
+        connectSrc: [
+          "'self'",
+          "http://localhost:5173",
+          "https://backend-api-1-1ns6.onrender.com",
+        ],
       },
     },
   })
 );
-
-
 
 // Compression reduces the size of HTTP responses to optimize traffic
 app.use(compression());
@@ -55,26 +57,26 @@ app.use(mongoSanitize());
 
 // CORS configuration to allow requests only from the frontend
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map(origin => origin.trim())
+  ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
   : ["http://localhost:5173", "https://havenova.de"];
-  const corsOptions = {
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  };
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
 // Enable CORS with the defined options
 app.use(cors(corsOptions));
 
 // Handel preflight requests
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Error handling for CORS
 app.use((err, req, res, next) => {
