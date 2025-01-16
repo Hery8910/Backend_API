@@ -12,8 +12,7 @@ const resetPassword = async (req, res) => {
       resetPasswordToken: hashedToken,
       resetPasswordExpires: { $gt: Date.now() },
     });
-    console.log(user.resetPasswordToken); // Token almacenado (hash)
-    console.log(hashedToken);
+ 
     if (!user) {
       return res.status(400).json({ message: "Invalid or expired token" });
     }

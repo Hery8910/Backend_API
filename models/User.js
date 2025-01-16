@@ -8,7 +8,10 @@ const userSchema = Schema({
   role: { type: String, default: 'client' }, 
   isVerified: { type: Boolean, default: false }, 
   address: { type: String, default: "" }, 
-  phone: { type: String, default: "" } 
+  phone: { type: String, default: "" },
+  resetPasswordToken: { type: String }, 
+  resetPasswordExpires: { type: Date }, 
+
 }, {
   timestamps: true
 });
