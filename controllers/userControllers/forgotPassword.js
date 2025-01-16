@@ -12,11 +12,22 @@ const forgotPassword = async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-    user.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
     user.resetPasswordExpires = Date.now() + 3600000; // Token válido por 1 hora
     await user.save();
 
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",").map(
+      (origin) => origin.trim()
+    );
+    const frontendUrl =
+      process.env.NODE_ENV === "production"
+        ? allowedOrigins[1]
+        : allowedOrigins[0];
+
+    const resetUrl = `${frontendUrl}/reset-password?token=${resetToken}`;
     const message = `
       <h1>Password Reset Request</h1>
       <p>Click the link below to reset your password:</p>
