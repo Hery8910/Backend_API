@@ -5,7 +5,9 @@ const { registerUser, validateRegister } = require('../controllers/userControlle
 const { loginLimiter, registerLimiter } = require("../middleware/rateLimiter");
 const loginUser = require('../controllers/userControllers/loginUser');
 const {verifyEmail, resendVerificationEmail} = require('../controllers/userControllers/verifyEmail');
+const forgotPassword = require('../controllers/userControllers/forgotPassword')
 const getUserProfile = require('../controllers/userControllers/getUserProfil');
+const resetPassword = require('../controllers/userControllers/resetPassword');
 
 
 const router = Router();
@@ -66,6 +68,8 @@ router.post('/register', registerLimiter, validateRegister, registerUser);
  *         description: Invalid credentials or unverified account
  */
 router.post('/login',loginLimiter, loginUser);
+router.post('/forgot-password', forgotPassword );
+router.post('/reset-password', resetPassword );
 router.post('/resend-verification', resendVerificationEmail);
 router.get('/verify-email/:token', verifyEmail); 
 /**
