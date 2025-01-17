@@ -48,6 +48,8 @@ const loginUser = async (req, res, next) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        address: user.address,
+        phone: user.phone,
       });
     } catch (err) {
       next(err);

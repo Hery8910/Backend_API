@@ -34,7 +34,14 @@ const verifyEmail = async (req, res) => {
         sameSite: "strict",
         maxAge: 3600000, // 1 hour
       });
-  
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        address: user.address,
+        phone: user.phone,
+      });
       
       res.redirect(`${process.env.FRONTEND_URL}/email/verify-email`);
   } catch (error) {
