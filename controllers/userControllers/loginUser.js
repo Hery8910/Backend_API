@@ -44,12 +44,15 @@ const loginUser = async (req, res, next) => {
     });
       // Send user details
       res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        address: user.address,
-        phone: user.phone,
+        message: "Login success.",
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          address: user.address,
+          phone: user.phone,
+        }
       });
     } catch (err) {
       next(err);
