@@ -18,7 +18,7 @@ const userSchema = Schema({
 
 // Instance method to compare entered password with the hashed password stored in the database
 userSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password); // Compare entered password with hashed password
+  return await compare(enteredPassword, this.password); // Compare entered password with hashed password
 };
 
 // Pre-save middleware to hash the password before saving the user document to the database
