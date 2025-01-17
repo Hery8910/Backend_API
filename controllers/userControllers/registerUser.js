@@ -81,11 +81,22 @@ const registerUser = async (req, res, next) => {
       html,
     });
     
-
+    const user = await User.findOne({ email });
     // Respond with success message
     res
       .status(200)
-      .json({ message: "Verification email sent. Please check your email." });
+      .json({ 
+        message: "Verification email sent. Please check your email.",
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          address: user.address,
+          phone: user.phone,
+        }
+ 
+      });
   } catch (err) {
     next(err);
   }

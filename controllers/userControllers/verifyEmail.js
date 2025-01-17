@@ -43,7 +43,6 @@ const verifyEmail = async (req, res) => {
         phone: user.phone,
       });
       
-      res.redirect(`${process.env.FRONTEND_URL}/email/verify-email`);
   } catch (error) {
     console.error(error);
     res.redirect(`${process.env.FRONTEND_URL}/email/verify-email?error=InvalidOrExpiredToken`);
