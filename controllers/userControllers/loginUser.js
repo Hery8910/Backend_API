@@ -50,6 +50,7 @@ const loginUser = async (req, res, next) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          isVerified: user.isVerified,
           address: user.address,
           phone: user.phone,
         }

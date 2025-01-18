@@ -39,6 +39,7 @@ const verifyEmail = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        isVerified: user.isVerified,
         address: user.address,
         phone: user.phone,
       });
