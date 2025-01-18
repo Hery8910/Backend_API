@@ -63,9 +63,7 @@ const registerUser = async (req, res, next) => {
     const verificationToken = generateToken(email);
 
     // Generate the verification URL
-    const verificationUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/api/users/verify-email/${verificationToken}`;
+    const verificationUrl = `${req.protocol}://${process.env.FRONTEND_URL}/api/users/verify-email/${verificationToken}`;
 
     const html = `
   <h1>Welcome, ${name}!</h1>
