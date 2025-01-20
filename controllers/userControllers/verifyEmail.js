@@ -35,7 +35,7 @@ const verifyEmail = async (req, res) => {
         maxAge: 3600000, // 1 hour
       });
       res.redirect(
-        `${process.env.FRONTEND_URL}`
+        `${process.env.FRONTEND_URL}/login`
       );
       
   } catch (error) {
