@@ -33,4 +33,4 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin, getUserProfile };
+module.exports = { protect, admin };
