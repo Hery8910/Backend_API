@@ -10,4 +10,4 @@ const getUserProfile = async (req, res) => {
       res.status(500).json({ message: "Error retrieving user profile" });
     }
   };
-module.exports = {  getUserProfile };
+module.exports =  getUserProfile ;
