@@ -35,13 +35,16 @@ const verifyEmail = async (req, res) => {
         maxAge: 3600000, // 1 hour
       });
       res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        isVerified: user.isVerified,
-        address: user.address,
-        phone: user.phone,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          isVerified: user.isVerified,
+          address: user.address,
+          phone: user.phone,
+        },
+        message: "Email successfully verified",
       });
       
   } catch (error) {
