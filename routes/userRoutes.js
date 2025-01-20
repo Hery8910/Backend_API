@@ -6,7 +6,7 @@ const { loginLimiter, registerLimiter } = require("../middleware/rateLimiter");
 const loginUser = require('../controllers/userControllers/loginUser');
 const {verifyEmail, resendVerificationEmail} = require('../controllers/userControllers/verifyEmail');
 const forgotPassword = require('../controllers/userControllers/forgotPassword')
-const getUserProfile = require('../middleware/authMiddleware');
+const getUserProfile = require('../controllers/userControllers/getUserProfile');
 const resetPassword = require('../controllers/userControllers/resetPassword');
 
 
