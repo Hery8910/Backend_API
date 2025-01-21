@@ -28,11 +28,11 @@ const verifyEmail = async (req, res) => {
       );
   
       // Send the authToken as a cookie
-      res.cookie("authToken", authToken, {
-        domain: process.env.NODE_ENV === "production" ? ".havenova.de" : undefined,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "None",
+      res.cookie("authToken", token, {
+        domain: ".havenova.de",
+        httpOnly: true, // Prevent JavaScript access
+        secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+        sameSite: "Lax", 
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.redirect(
