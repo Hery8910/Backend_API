@@ -31,8 +31,8 @@ const verifyEmail = async (req, res) => {
       res.cookie("authToken", authToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 3600000, // 1 hour
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.redirect(
         `${process.env.FRONTEND_URL}/login`

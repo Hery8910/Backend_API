@@ -39,8 +39,8 @@ const loginUser = async (req, res, next) => {
     res.cookie("authToken", token, {
       httpOnly: true, // Prevent JavaScript access
       secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-      sameSite: "strict", // Protect against CSRF
-      maxAge: 3600000, // 1 hour
+      sameSite: "none", 
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
       // Send user details
       res.status(200).json({
