@@ -29,9 +29,10 @@ const verifyEmail = async (req, res) => {
   
       // Send the authToken as a cookie
       res.cookie("authToken", authToken, {
+        domain: process.env.NODE_ENV === "production" ? ".havenova.de" : undefined,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.redirect(

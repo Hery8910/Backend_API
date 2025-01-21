@@ -37,9 +37,10 @@ const loginUser = async (req, res, next) => {
     const token = generateToken(user);
 
     res.cookie("authToken", token, {
+      domain: process.env.NODE_ENV === "production" ? ".havenova.de" : undefined,
       httpOnly: true, // Prevent JavaScript access
       secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-      sameSite: "none", 
+      sameSite: "None", 
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
       // Send user details
