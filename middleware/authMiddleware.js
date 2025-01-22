@@ -4,6 +4,7 @@ const User = require("../models/User");
 // Middleware function to protect routes and ensure only authenticated users can access
 
 const protect = (req, res, next) => {
+  console.log("Cookies received:", req.cookies.authToken);
   const token = req.cookies.authToken; // Recuperar el token desde las cookies
 
   if (!token) {
