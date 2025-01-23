@@ -22,17 +22,16 @@ const validateRegister = [
 
 const registerUser = async (req, res, next) => {
   try {
-    
     const { name, email, password, address, phone } = req.body;
     // Verify if there is error on the validation
     const errors = validationResult(req);
-    
+
     if (!errors.isEmpty()) {
       const error = new Error(errors.array()[0].msg);
       error.statusCode = 400;
       throw error;
     }
-    
+
     // Look if user exist
     const userExists = await User.findOne({ email });
 
@@ -49,15 +48,13 @@ const registerUser = async (req, res, next) => {
     const newUser = new User({
       name,
       email,
-      password: hashedPassword, 
+      password: hashedPassword,
       address,
       phone,
     });
 
     // Save the user to the database
     await newUser.save();
-
-    
 
     // Generate a verification token
     const verificationToken = generateToken(email);
@@ -80,27 +77,16 @@ const registerUser = async (req, res, next) => {
       subject: "Account Verification - Havenova",
       html,
     });
-    
+
     const user = await User.findOne({ email });
     // Respond with success message
-    res
-      .status(200)
-      .json({ 
-        message: "Verification email sent. Please check your email.",
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          isVerified: user.isVerified,
-          address: user.address,
-          phone: user.phone,
-        }
- 
-      });
+
+    res.status(200).json({
+      message: "We send you a verification email. Please check your email.",
+    });
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = {registerUser, validateRegister};
+module.exports = { registerUser, validateRegister };
