@@ -10,11 +10,12 @@ const verifyEmail = async (req, res) => {
     const user = await User.findOne({ email: decoded.email });
 
     if (!user) {
-      return res.redirect(`${process.env.FRONTEND_URL}/email/verify-email?error=UserNotFound`);
+      return res.status(400).json({ message: "User not found." });
+
     }
 
     if (user.isVerified) {
-      return res.redirect(`${process.env.FRONTEND_URL}/email/verify-email?error=AlreadyVerified`);
+      return res.redirect(`${process.env.FRONTEND_URL}`);
     }
 
     user.isVerified = true;
@@ -55,9 +56,7 @@ const resendVerificationEmail = async (req, res) => {
     }
 
     if (user.isVerified) {
-      return res
-        .status(400)
-        .json({ message: "This email has already been verified." });
+      return res.redirect(`${process.env.FRONTEND_URL}`);
     }
 
     const verificationToken = jwt.sign(

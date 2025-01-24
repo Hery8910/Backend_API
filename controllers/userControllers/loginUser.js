@@ -22,16 +22,19 @@ const loginUser = async (req, res, next) => {
 
     // Compare passwords
     if (!user || !(await user.matchPassword(password))) {
-      const error = new Error("Invalid email or password"); // Incorrect password
-      error.statusCode = 401;
-      throw error;
+      return res.status(401).json({
+        message: "Invalid email or password", // Mensaje claro para el frontend
+        field: !user ? "email" : "password", // Campo que produjo el error
+        error: "AUTHENTICATION_FAILED", // Código de error interno (opcional)
+      });
     }
 
     // Check if the user has verified their email
     if (!user.isVerified) {
-      const error = new Error("Please verify your account before logging in.");
-      error.statusCode = 401;
-      throw error;
+      return res.status(401).json({
+        message: "Please verify your account before logging in.", // Mensaje claro para el frontend
+        error: "AUTHENTICATION_FAILED", // Código de error interno (opcional)
+      });
     }
 
     const token = generateToken(user);
