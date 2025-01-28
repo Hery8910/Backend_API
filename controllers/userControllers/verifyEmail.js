@@ -2,6 +2,18 @@ const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../../utils/sendEmail");
 
+const generateToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,         
+      role: user.role,      
+      email: user.email     
+    },
+    process.env.JWT_SECRET, 
+    { expiresIn: '1h' }     
+  );
+};
+
 
 const verifyEmail = async (req, res) => {
   try {
@@ -21,12 +33,7 @@ const verifyEmail = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
-      // Generate a JWT token for authentication
-      const authToken = jwt.sign(
-        { id: user._id, role: user.role, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
+    const token = generateToken(user);
   
       // Send the authToken as a cookie
       res.cookie("authToken", token, {
