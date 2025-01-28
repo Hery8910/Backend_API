@@ -9,6 +9,7 @@ const forgotPassword = require('../controllers/userControllers/forgotPassword')
 const getUserProfile = require('../controllers/userControllers/getUserProfile');
 const resetPassword = require('../controllers/userControllers/resetPassword');
 const logoutUser = require('../controllers/userControllers/logoutUser');
+const updateUser = require('../controllers/userControllers/updateUser');
 
 
 const router = Router();
@@ -72,6 +73,7 @@ router.post('/login',loginLimiter, loginUser);
 router.post('/logout', logoutUser);
 router.post('/forgot-password', forgotPassword );
 router.post('/reset-password', resetPassword );
+router.post('/update-user', updateUser );
 router.post('/resend-verification', resendVerificationEmail);
 router.get('/verify-email/:token', verifyEmail); 
 /**

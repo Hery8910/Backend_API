@@ -25,7 +25,6 @@ const loginUser = async (req, res, next) => {
       return res.status(401).json({
         message: "Invalid email or password", // Mensaje claro para el frontend
         field: !user ? "email" : "password", // Campo que produjo el error
-        error: "AUTHENTICATION_FAILED", // Código de error interno (opcional)
       });
     }
 
@@ -33,7 +32,7 @@ const loginUser = async (req, res, next) => {
     if (!user.isVerified) {
       return res.status(401).json({
         message: "Please verify your account before logging in.", // Mensaje claro para el frontend
-        error: "AUTHENTICATION_FAILED", // Código de error interno (opcional)
+        field: "Please verify your account before logging in.", // Código de error interno (opcional)
       });
     }
 
