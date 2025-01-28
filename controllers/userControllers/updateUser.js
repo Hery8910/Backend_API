@@ -6,9 +6,8 @@ const updateUser = async (req, res, next) => {
   
       // Check if the user exists
       const user = await User.findOne({ email });
-        console.log(user);
+        console.log("User not found:", user);
         
-      // Compare passwords
       if (!user) {
         return res.status(401).json({
           message: "Something went wrong", 

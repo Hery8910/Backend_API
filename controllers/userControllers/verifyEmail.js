@@ -15,7 +15,7 @@ const verifyEmail = async (req, res) => {
     }
 
     if (user.isVerified) {
-      return res.redirect(`${process.env.FRONTEND_URL}`);
+      return res.redirect(`${process.env.FRONTEND_URL}/`);
     }
 
     user.isVerified = true;
@@ -37,7 +37,7 @@ const verifyEmail = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.redirect(
-        `${process.env.FRONTEND_URL}`
+        `${process.env.FRONTEND_URL}/`
       );
       
   } catch (error) {
